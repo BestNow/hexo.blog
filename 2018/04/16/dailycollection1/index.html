@@ -90,22 +90,22 @@
 
 <section id="comment">
   <h1 class="title">留言</h1>
+  <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTc2OS8xMjMwNQ==">
+	 <script type="text/javascript">
+    (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
 
-  
-      <div id="fb-root"></div>
-<script>
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-</script>
+         if (typeof LivereTower === 'function') { return; }
 
-<div class="fb-comments" data-href="http://yoursite.com/2018/04/16/dailycollection1/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
-      
-  
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+
+        e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+	 </script>
+  <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+  </div>
 </section>
 
 </div></div>
