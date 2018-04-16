@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Joker丶XY</title>
+  
+  <subtitle>享受过程，尊重结果</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2018-04-16T09:27:43.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>JXY</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习网址</title>
+    <link href="http://yoursite.com/2018/04/16/dailycollection1/"/>
+    <id>http://yoursite.com/2018/04/16/dailycollection1/</id>
+    <published>2018-04-16T09:19:29.000Z</published>
+    <updated>2018-04-16T09:27:43.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>OpenGL中文站：<a href="https://learnopengl-cn.github.io" target="_blank" rel="noopener">https://learnopengl-cn.github.io</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;OpenGL中文站：&lt;a href=&quot;https://learnopengl-cn.github.io&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://learnopengl-cn.github.io&lt;/a&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="日常搜集" scheme="http://yoursite.com/categories/dailycollection/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>OpenGL环境配置</title>
+    <link href="http://yoursite.com/2018/04/16/opengl-base1/"/>
+    <id>http://yoursite.com/2018/04/16/opengl-base1/</id>
+    <published>2018-04-16T08:01:12.000Z</published>
+    <updated>2018-04-16T08:04:54.000Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="OpenGL" scheme="http://yoursite.com/categories/OpenGL/"/>
+    
+    
+  </entry>
+  
+</feed>

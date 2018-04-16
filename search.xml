@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[学习网址]]></title>
+    <url>%2F2018%2F04%2F16%2Fdailycollection1%2F</url>
+    <content type="text"><![CDATA[OpenGL中文站：https://learnopengl-cn.github.io]]></content>
+      <categories>
+        <category>日常搜集</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[OpenGL环境配置]]></title>
+    <url>%2F2018%2F04%2F16%2Fopengl-base1%2F</url>
+    <content type="text"></content>
+      <categories>
+        <category>OpenGL</category>
+      </categories>
+  </entry>
+</search>
