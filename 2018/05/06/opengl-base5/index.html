@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>生成两个不同颜色的三角形（通过片段着色器） | Joker丶XY</title>
+  <meta name="author" content="JXY">
+  
+  <meta name="description" content="阶段性总结所学知识点，用以复习和分享。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="生成两个不同颜色的三角形（通过片段着色器）"/>
+  <meta property="og:site_name" content="Joker丶XY"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Joker丶XY" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?543b1d5ae28b8c25aac236acccf1782b";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Joker丶XY</a></h1>
+  <h2><a href="/">享受过程，尊重结果</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">主页</a></li>
+    
+      <li><a href="/categories">分类</a></li>
+    
+      <li><a href="/archives">归档</a></li>
+    
+      <li><a href="/blogroll">友链</a></li>
+    
+      <li><a href="/about">About Me</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2018-05-06T08:14:31.000Z"><a href="/2018/05/06/opengl-base5/">2018-05-06</a></time>
+      
+      
+  
+    <h1 class="title">生成两个不同颜色的三角形（通过片段着色器）</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li><p>片段着色器FragmentShader.h</p>
+<a id="more"></a>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _FRAGMENTSHADER_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _FRAGMENTSHADER_H_</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * fragmentShaderSource =</span><br><span class="line"><span class="string">"#version 330 core\n"</span></span><br><span class="line"><span class="string">"out vec4 FragColor;\n"</span></span><br><span class="line"><span class="string">"void main()&#123;\n"</span></span><br><span class="line"><span class="string">"FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"</span></span><br><span class="line"><span class="string">"&#125;\0"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* fragmentShaderSource1 =</span><br><span class="line"><span class="string">"#version 330 core\n"</span></span><br><span class="line"><span class="string">"out vec4 FragColor;\n"</span></span><br><span class="line"><span class="string">"void main()&#123;\n"</span></span><br><span class="line"><span class="string">"FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"</span></span><br><span class="line"><span class="string">"&#125;\0"</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>顶点着色器VertexShader.h</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _VERTEXSHADER_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _VERTEXSHADER_H_</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* vertexShaderSource =</span><br><span class="line"><span class="string">"#version 330 core\n"</span></span><br><span class="line"><span class="string">"layout (location = 0) in vec3 aPos;\n"</span></span><br><span class="line"><span class="string">"void main()&#123;\n"</span></span><br><span class="line"><span class="string">"gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"</span></span><br><span class="line"><span class="string">"&#125;\0"</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// !_VERTEXSHADER_H_</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>main函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;glad\glad.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GLFW\glfw3.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"VertexShader.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"FragmentShader.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">framebuffer_size_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processInput</span><span class="params">(GLFWwindow* window)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> SCR_WIDTH = <span class="number">800</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> SCR_HEIGHT = <span class="number">600</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	glfwInit();</span><br><span class="line">	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, <span class="number">3</span>);</span><br><span class="line">	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, <span class="number">3</span>);</span><br><span class="line">	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __APPLE__</span></span><br><span class="line">	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, <span class="string">"LearnOpenGL"</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">if</span> (window == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Failed to create GLFW window"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">		glfwTerminate();</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	glfwMakeContextCurrent(window);</span><br><span class="line">	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) &#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Failed to initialize GLAD"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> vertexShader = glCreateShader(GL_VERTEX_SHADER);</span><br><span class="line">	glShaderSource(vertexShader, <span class="number">1</span>, &amp;vertexShaderSource, <span class="literal">NULL</span>);</span><br><span class="line">	glCompileShader(vertexShader);</span><br><span class="line">	<span class="keyword">int</span> success;</span><br><span class="line">	<span class="keyword">char</span> infoLog[<span class="number">512</span>];</span><br><span class="line">	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">	<span class="keyword">if</span> (!success) &#123;</span><br><span class="line">		glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::VERTEX::COMPILEATION_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> fragmentShader1 = glCreateShader(GL_FRAGMENT_SHADER);</span><br><span class="line">	glShaderSource(fragmentShader1, <span class="number">1</span>, &amp;fragmentShaderSource, <span class="literal">NULL</span>);</span><br><span class="line">	glCompileShader(fragmentShader1);</span><br><span class="line">	glGetShaderiv(fragmentShader1, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">	<span class="keyword">if</span> (!success) &#123;</span><br><span class="line">		glGetShaderInfoLog(fragmentShader1, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);</span><br><span class="line">	glShaderSource(fragmentShader2, <span class="number">1</span>, &amp;fragmentShaderSource1, <span class="literal">NULL</span>);</span><br><span class="line">	glCompileShader(fragmentShader2);</span><br><span class="line">	glGetShaderiv(fragmentShader2, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">	<span class="keyword">if</span> (!success) &#123;</span><br><span class="line">		glGetShaderInfoLog(fragmentShader2, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::FRAGMENT::COMPILEATION_FAILED1\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//因为使用了两个不同的片段着色器，所以需要创建两个着色器程序，分别链接不同的着色器</span></span><br><span class="line">	<span class="keyword">int</span> shaderProgram1 = glCreateProgram();</span><br><span class="line">	glAttachShader(shaderProgram1, vertexShader);</span><br><span class="line">	glAttachShader(shaderProgram1, fragmentShader1);</span><br><span class="line">	glLinkProgram(shaderProgram1);</span><br><span class="line">	glGetProgramiv(shaderProgram1, GL_LINK_STATUS, &amp;success);</span><br><span class="line">	<span class="keyword">if</span> (!success) &#123;</span><br><span class="line">		glGetProgramInfoLog(shaderProgram1, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PORGRAM::LINKING_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> shaderProgram2 = glCreateProgram();</span><br><span class="line">	glAttachShader(shaderProgram2, vertexShader);</span><br><span class="line">	glAttachShader(shaderProgram2, fragmentShader2);</span><br><span class="line">	glLinkProgram(shaderProgram2);</span><br><span class="line">	glGetProgramiv(shaderProgram2, GL_LINK_STATUS, &amp;success);</span><br><span class="line">	<span class="keyword">if</span> (!success) &#123;</span><br><span class="line">		glGetProgramInfoLog(shaderProgram2, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PORGRAM::LINKING_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	glDeleteShader(vertexShader);</span><br><span class="line">	glDeleteShader(fragmentShader1);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">float</span> firstTriangle[] = &#123;</span><br><span class="line">		<span class="number">-0.9f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">		<span class="number">-0.0f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">		<span class="number">-0.45f</span>, <span class="number">0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">float</span> secondTriangle[] = &#123;</span><br><span class="line">		<span class="number">0.0f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">		<span class="number">0.9f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">		<span class="number">0.45f</span>, <span class="number">0.5f</span>, <span class="number">0.0f</span></span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> VBOs[<span class="number">2</span>], VAOs[<span class="number">2</span>];</span><br><span class="line">	glGenVertexArrays(<span class="number">2</span>, VAOs);</span><br><span class="line">	glGenBuffers(<span class="number">2</span>, VBOs);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//没有解除绑定的操作，因为使用了不同的VAO，所以不需要</span></span><br><span class="line">	glBindVertexArray(VAOs[<span class="number">0</span>]);</span><br><span class="line">	glBindBuffer(GL_ARRAY_BUFFER, VBOs[<span class="number">0</span>]);</span><br><span class="line">	glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(firstTriangle), firstTriangle, GL_STATIC_DRAW);</span><br><span class="line">	glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>), (<span class="keyword">void</span>*)<span class="number">0</span>);</span><br><span class="line">	glEnableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	glBindVertexArray(VAOs[<span class="number">1</span>]);</span><br><span class="line">	glBindBuffer(GL_ARRAY_BUFFER, VBOs[<span class="number">1</span>]);</span><br><span class="line">	glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(secondTriangle), secondTriangle, GL_STATIC_DRAW);</span><br><span class="line">	glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>), (<span class="keyword">void</span>*)<span class="number">0</span>);</span><br><span class="line">	glEnableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (!glfwWindowShouldClose(window)) &#123;</span><br><span class="line">		processInput(window);</span><br><span class="line"></span><br><span class="line">		glClearColor(<span class="number">0.2f</span>, <span class="number">0.3f</span>, <span class="number">0.3f</span>, <span class="number">1.0f</span>);</span><br><span class="line">		glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">		glUseProgram(shaderProgram1);</span><br><span class="line">		glBindVertexArray(VAOs[<span class="number">0</span>]);</span><br><span class="line">		glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">		glUseProgram(shaderProgram2);</span><br><span class="line">		glBindVertexArray(VAOs[<span class="number">1</span>]);</span><br><span class="line">		glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">		glfwSwapBuffers(window);</span><br><span class="line">		glfwPollEvents();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	glDeleteVertexArrays(<span class="number">2</span>, VAOs);</span><br><span class="line">	glDeleteBuffers(<span class="number">2</span>, VBOs);</span><br><span class="line"></span><br><span class="line">	glfwTerminate();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processInput</span><span class="params">(GLFWwindow* window)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) &#123;</span><br><span class="line">		glfwSetWindowShouldClose(window, <span class="literal">true</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">framebuffer_size_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123;</span><br><span class="line">	glViewport(<span class="number">0</span>, <span class="number">0</span>, width, height);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/OpenGL/">OpenGL</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+  <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTc2OS8xMjMwNQ==">
+	 <script type="text/javascript">
+    (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+
+         if (typeof LivereTower === 'function') { return; }
+
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+
+        e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+	 </script>
+  <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+  </div>
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/OpenGL/">OpenGL</a><small>5</small></li>
+  
+    <li><a href="/categories/dailycollection/">日常搜集</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2018 JXY
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
